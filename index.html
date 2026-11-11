@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d0a">
+  <title>Minecraft Player Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","skinview3d":"https://cdn.jsdelivr.net/npm/skinview3d@3.2.0/+esm"}}
+  </script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar wrap">
+    <a class="brand" href="#"><span class="brand-mark">◆</span> PLAYER<span class="gold">.ID</span></a>
+    <span class="top-label"><i class="pulse"></i> MINECRAFT PLAYER PROFILE</span>
+    <button class="top-link edit-trigger" id="openEditor">EDIT PROFILE <span>✎</span></button>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> DIGITAL PLAYER CARD / 001</div>
+        <h1>YOUR WORLD.<br><em>YOUR IDENTITY.</em></h1>
+        <p class="intro">A home for your Minecraft identity, character and server details.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#profile">VIEW PROFILE <span>↓</span></a>
+          <button class="btn btn-ghost" id="copyUsername">COPY USERNAME</button>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="art-tag">3D PLAYER MODEL <b>LIVE</b></div>
+        <canvas id="skin_container"></canvas>
+        <div class="art-bottom"><span>JAVA EDITION</span><span class="gold">SKIN PREVIEW / 360°</span></div>
+      </div>
+    </section>
+
+    <section class="profile-section" id="profile">
+      <div class="section-heading"><div><span class="eyebrow">01 / PLAYER DETAILS</span><h2>PLAYER PROFILE</h2></div><span class="section-index">IDENTITY DATA</span></div>
+      <div class="profile-grid">
+        <article class="identity-card panel">
+          <div class="card-top"><span class="mini-label">PLAYER IDENTITY</span><span class="verified">● PROFILE</span></div>
+          <div class="avatar" id="avatar">?</div>
+          <h3 id="displayName">YOUR USERNAME</h3>
+          <p class="muted">Minecraft Java Player</p>
+          <div class="thin-line"></div>
+          <div class="data-row"><span>PROFILE ID</span><b id="profileId">PLAYER-0001</b></div>
+          <div class="data-row"><span>EDITION</span><b>JAVA</b></div>
+          <div class="data-row"><span>VERSION</span><b id="versionText">26.3</b></div>
+        </article>
+        <article class="details-card panel">
+          <div class="card-top"><span class="mini-label">ACCOUNT INFORMATION</span><span class="card-symbol">⌘</span></div>
+          <div class="detail-list">
+            <div class="detail"><span>IN-GAME USERNAME</span><strong id="usernameText">YourUsername</strong></div>
+            <div class="detail"><span>MINECRAFT UUID</span><strong class="mono" id="uuidText">Add your UUID here</strong></div>
+            <div class="detail"><span>MICROSOFT ACCOUNT</span><strong id="msText">Not displayed</strong></div>
+            <div class="detail"><span>PLAYER STATUS</span><strong><i class="pulse"></i> <span id="statusText">PROFILE ACTIVE</span></strong></div>
+          </div>
+          <p class="note">Privacy tip: never publish your Microsoft password, recovery codes, or private sign-in details.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="server-section" id="connect">
+      <div class="section-heading"><div><span class="eyebrow">02 / YOUR MULTIPLAYER HOME</span><h2>SERVER CONNECTION</h2></div><span class="section-index">OPTIONAL</span></div>
+      <article class="server-card panel">
+        <div class="server-emblem">⬡</div>
+        <div class="server-info"><span class="mini-label">FEATURED SERVER</span><h3 id="serverName">YOUR SERVER NAME</h3><p id="serverDescription">Your Minecraft community starts here.</p><div class="server-address"><code id="serverAddress">play.example.net</code><button id="copyAddress" aria-label="Copy server address">COPY ↗</button></div></div>
+        <div class="server-status"><span class="status-dot"></span><b id="serverStatus">SERVER INFO</b><small>ADDRESS LISTED</small></div>
+      </article>
+    </section>
+
+    <section class="links-section">
+      <div class="section-heading"><div><span class="eyebrow">03 / FIND ME ELSEWHERE</span><h2>MY LINKS</h2></div><span class="section-index">SOCIAL</span></div>
+      <div class="social-grid">
+        <a class="social panel" id="discordLink" href="#" target="_blank" rel="noreferrer"><span>DISCORD</span><b>↗</b></a>
+        <a class="social panel" id="youtubeLink" href="#" target="_blank" rel="noreferrer"><span>YOUTUBE</span><b>↗</b></a>
+        <a class="social panel" id="otherLink" href="#" target="_blank" rel="noreferrer"><span>MORE</span><b>↗</b></a>
+      </div>
+    </section>
+  </main>
+
+
+  <div class="editor-backdrop" id="editorBackdrop" aria-hidden="true">
+    <section class="editor-panel" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+      <div class="editor-heading">
+        <div><span class="eyebrow">PROFILE CONTROL CENTER</span><h2 id="editorTitle">EDIT YOUR PROFILE</h2></div>
+        <button class="close-editor" id="closeEditor" aria-label="Close editor">×</button>
+      </div>
+      <p class="editor-help">Update your details here. Changes appear instantly and are saved in this browser.</p>
+      <form id="profileForm">
+        <div class="form-grid">
+          <label>DISPLAY NAME<input name="username" maxlength="32" placeholder="Your Minecraft username"></label>
+          <label>PROFILE ID<input name="profileId" maxlength="40" placeholder="PLAYER-0001"></label>
+          <label>MINECRAFT UUID<input name="uuid" maxlength="64" placeholder="Optional UUID"></label>
+          <label>MICROSOFT ACCOUNT LABEL<input name="microsoftAccount" maxlength="80" placeholder="Not displayed"></label>
+          <label>GAME VERSION<input name="version" maxlength="20" placeholder="26.3"></label>
+          <label>SERVER NAME<input name="serverName" maxlength="60" placeholder="Your server name"></label>
+          <label class="full-field">SERVER ADDRESS<input name="serverAddress" maxlength="120" placeholder="play.example.net"></label>
+          <label class="full-field">SERVER DESCRIPTION<input name="serverDescription" maxlength="160" placeholder="A short description"></label>
+          <label>DISCORD URL<input name="discordUrl" type="url" placeholder="https://discord.gg/..."></label>
+          <label>YOUTUBE URL<input name="youtubeUrl" type="url" placeholder="https://youtube.com/@..."></label>
+          <label class="full-field">OTHER LINK<input name="otherUrl" type="url" placeholder="https://..."></label>
+          <label class="full-field skin-upload">YOUR MINECRAFT SKIN (PNG)
+            <input name="skinFile" id="skinFile" type="file" accept="image/png">
+            <small>Choose a standard Minecraft skin PNG. It will be previewed on the 3D model.</small>
+          </label>
+        </div>
+        <div class="editor-actions">
+          <button class="btn btn-primary" type="submit">SAVE CHANGES <span>✓</span></button>
+          <button class="btn btn-ghost" type="button" id="resetProfile">RESET DEFAULTS</button>
+        </div>
+        <p class="editor-footnote">Saved only in this browser/device. To publish changes for everyone, update the website files and redeploy. Never enter your Microsoft password or recovery details.</p>
+      </form>
+    </section>
+  </div>
+
+  <footer class="wrap footer"><a class="brand" href="#">PLAYER<span class="gold">.ID</span></a><span>BUILT FOR THE BLOCK-BY-BLOCK LEGEND.</span><span>© <span id="year"></span></span></footer>
+  <div class="toast" id="toast">Copied!</div>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
